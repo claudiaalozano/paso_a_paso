@@ -24,3 +24,11 @@ async def wget(session, uri):
         else:
             return await response.read()
 
+async def download(session, uri):
+    content = await wget(session, uri)
+    if content is None:
+        return None
+    with open(uri.split(sep)[-1], "wb") as f:
+        f.write(content)
+        return uri
+    
