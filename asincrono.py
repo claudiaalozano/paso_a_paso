@@ -5,6 +5,9 @@ import aiohttp
 from aiohttp import ClientSession
 #libreria para el manejo de archivos
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
+import sys
+from functools import partial
 
 async def main(uri):
     async with aiohttp.ClientSession() as session:
@@ -31,6 +34,7 @@ async def download(session, uri):
     content = await wget(session, uri)
     if content is None:
         return None
+    sep = "/" if "/" in uri else "\\"
     with open(uri.split(sep)[-1], "wb") as f:
         f.write(content)
         return uri
@@ -59,4 +63,5 @@ async def get_uri_from_images_src(base_uri, images_src):
         
         else:
             yield parsed.geturl()
+        await asyncio.sleep(0.001)
             
